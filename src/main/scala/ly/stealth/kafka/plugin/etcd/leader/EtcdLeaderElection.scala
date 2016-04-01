@@ -30,13 +30,17 @@ import scala.collection.mutable
 
 
 class EtcdLeaderElection(
+  // is this the config i need to give tecd to store
   config: Config,
+  // is this the runing etcd i can talk to?
   etcdClient: EtcdClient,
   resourceName: String = "kafka_controller") extends LeaderElection with LogUtils {
 
   override def service: String = resourceName
 
   override def getLeader: Option[(String, String)] = {
+    // need the topic name:
+    // tecd who can talk to:
     None
   }
 
@@ -47,9 +51,14 @@ class EtcdLeaderElection(
 
   private def tryAcquire(candidate: String, supData: String): Unit = {
     logger.info(s"Trying to acquire leadership for $candidate")
+    // tecd who can talk to:
+    // what is candidate mean:
+    // what is supData:
+    // is resourceName always the same? then what is the point to have it?
   }
 
   private def cancelRenewTask(candidate: String) = {
+    // what does this method do? dont really understand the name.
     renewTaskLock.synchronized {
       if (renewingTaskFuture != null) {
         logger.info(s"Renewing task is not empty - this candidate $candidate was a leader, cancelling renew task")
@@ -60,6 +69,9 @@ class EtcdLeaderElection(
   }
 
   private def setupLeaderWatchers(candidate: String, supData: String): Unit = {
+    // is this for the pinger? to renew TTL?
+    // is the comment code doing any right? or i need to start everying over again.
+
   /*
     cacheListenerRegistry.addValueChangeListener(resourceName, getLeader.map(_._1), new ValueChangeListener {
       override def valueChanged(newValue: Option[String]): Unit = {
@@ -95,6 +107,9 @@ class EtcdLeaderElection(
   }
 
   override def resign(leader: String): Unit = {
+    // what is the leader here? my concurrent leader status?
+
+    // resign the leader, and think about case when deleting will be wrong.
     //val boundStatement = new BoundStatement(deleteLeaderStmt)
     //session.execute(boundStatement.bind(resourceName, leader))
   }
